@@ -29,5 +29,20 @@ namespace IcommandItool
             command.OnCreate(axMapControl1.Object);
             command.OnClick();
         }
+
+        private void axMapControl1_OnMouseDown(object sender, IMapControlEvents2_OnMouseDownEvent e)
+        {
+
+        }
+
+        private void 按比例放大_Click(object sender, EventArgs e)
+        {
+
+            ICommand cmd = new ControlsMapFixedZoomIn();
+            cmd.OnCreate(axMapControl1.Object);
+            cmd.OnClick();
+        }
+
+   
     }
 }

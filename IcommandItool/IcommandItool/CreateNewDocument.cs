@@ -7,6 +7,7 @@ using ESRI.ArcGIS.ADF.CATIDs;
 using ESRI.ArcGIS.Controls;
 using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.SystemUI;
+using System.Diagnostics;
 
 
 namespace IcommandItool
@@ -37,6 +38,8 @@ namespace IcommandItool
         /// <param name="hook">Instance of the application</param>
         public override void OnCreate(object hook)
         {
+
+            Debugger.Break(); // 在这里设置条件断点
             if (m_hookHelper == null)
                 m_hookHelper = new HookHelper();
 
@@ -48,66 +51,12 @@ namespace IcommandItool
         /// </summary>
         public override void OnClick()
         {
-            IMapControl3 mapControl = null;
 
-            //get the MapControl from the hook in case the container is a ToolbarControl
-            if (m_hookHelper.Hook is IToolbarControl)
-            {
-                mapControl = (IMapControl3)((IToolbarControl)m_hookHelper.Hook).Buddy;
-            }
-            //In case the container is MapControl
-            else if (m_hookHelper.Hook is IMapControl3)
-            {
-                mapControl = (IMapControl3)m_hookHelper.Hook;
-            }
-            else
-            {
-                MessageBox.Show("Active control must be MapControl!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                return;
-            }
-
-            //check to see if there is an active edit session and whether edits have been made
-            DialogResult result;
-            IEngineEditor engineEditor = new EngineEditor();
-
-            if ((engineEditor.EditState == esriEngineEditState.esriEngineStateEditing) && (engineEditor.HasEdits() == true))
-            {
-                result = MessageBox.Show("Would you like to save your edits", "Save Edits", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
-
-                switch (result)
-                {
-
-                    case DialogResult.Cancel:
-                        return;
-
-                    case DialogResult.No:
-                        engineEditor.StopEditing(false);
-                        break;
-
-                    case DialogResult.Yes:
-                        engineEditor.StopEditing(true);
-                        break;
-
-                }
-            }
-
+            Debugger.Break(); // 在这里设置条件断点
             //allow the user to save the current document
-            DialogResult res = MessageBox.Show("你要保存当前文档吗?", "AoView", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (res == DialogResult.Yes)
-            {
-                //launch the save command
-                //ICommand command = new ControlsSaveAsDocCommand();
-                //command.OnCreate(m_hookHelper.Hook);
-                //command.OnClick();
-            }
-
-            //create a new Map
-            IMap map = new Map();
-            map.Name = "Map";
-
-            //assign the new map to the MapControl
-            mapControl.DocumentFilename = string.Empty;
-            mapControl.Map = map;
+            DialogResult res = MessageBox.Show("你要保存当前文档吗?", "AoView", 
+                MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Warning);
+          
         }
 
         #endregion
